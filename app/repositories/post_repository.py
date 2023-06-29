@@ -1,6 +1,7 @@
 from bson import ObjectId
 
 from app import mongo
+import re
 
 
 class PostRepository:
@@ -8,7 +9,9 @@ class PostRepository:
         self.collection = mongo.db.posts
 
     def find_by_title(self, title):
-        return self.collection.find({"title": f"/.*{title}.*/"})
+        rgx = re.compile('.*' + title + '.*', re.IGNORECASE)
+
+        return self.collection.find({'title': rgx})
 
     def get_by_title(self, title):
         return self.collection.find_one({"title": title})
@@ -16,9 +19,12 @@ class PostRepository:
     def get_by_id(self, user_id):
         return self.collection.find_one({'_id': ObjectId(user_id)})
 
+    def get_posts(self):
+        return self.collection.find()
+
     def create(self, image, title, description, user_id):
         return self.collection.insert_one({'image': image, 'title': title, 'description': description,
-                                           'post_data': {'likes': 0, 'unlikes': 0}, 'user_id': user_id}).inserted_id
+                                           'post_data': {'likes': 0, 'unlikes': 0}, 'user_id': user_id, 'comments': []}).inserted_id
 
     def update_post(self, post_id, image, title, description):
         return self.collection.update_one({'_id': ObjectId(post_id)},

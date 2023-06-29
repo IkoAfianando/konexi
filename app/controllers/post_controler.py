@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 @jwt_required()
-def get_post(id):
+def get_post_by_id(id):
     post_repo = PostRepository()
     post = post_repo.get_by_id(id)
 
@@ -25,6 +25,30 @@ def get_post(id):
         'likes': likes,
         'unlikes': unlikes
     }
+    return jsonify(result), 200
+
+@jwt_required()
+def get_posts():
+    query_title = request.args.get('title')
+
+    post_repo = PostRepository()
+
+    if query_title is not None:
+        data = post_repo.find_by_title(query_title)
+    else:
+        data = post_repo.get_posts()
+
+
+    result = []
+    for post in data:
+        result.append({
+            'id': str(post['_id']),
+            'title': post['title'],
+            'image': post['image'],
+            'description': post['description'],
+            'likes': post['post_data']['likes'],
+            'unlikes': post['post_data']['unlikes']
+        })
     return jsonify(result), 200
 
 @jwt_required()

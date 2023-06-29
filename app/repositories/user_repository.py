@@ -14,7 +14,14 @@ class UserRepository:
         return self.collection.find_one({'_id': ObjectId(user_id)})
 
     def create(self, username, password):
-        return self.collection.insert_one({'username': username, 'password': password}).inserted_id
+        return self.collection.insert_one({'username': username, 'password': password,
+                                           'social': {'follower': 0, 'following': 0}}).inserted_id
 
     def update_password(self, user_id, password):
         return self.collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'password': password}})
+
+    def insert_follower(self, user_id):
+        return self.collection.update_one({'_id': ObjectId(user_id)}, {'$inc': {'social.follower': +1}})
+
+    def insert_following(self, user_id):
+        return self.collection.update_one({'_id': ObjectId(user_id)}, {'$inc': {'social.following': +1}})
