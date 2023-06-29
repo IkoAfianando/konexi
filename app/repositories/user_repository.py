@@ -2,6 +2,7 @@ from bson import ObjectId
 
 from app import mongo
 
+
 class UserRepository:
     def __init__(self):
         self.collection = mongo.db.users
