@@ -46,3 +46,6 @@ class PostRepository:
         like = self.collection.find_one({'_id': ObjectId(post_id)})
         likes = like['post_data']['likes']
         return self.collection.update_one({'_id': ObjectId(post_id)}, {'$set': {'post_data.likes': likes - 1}})
+
+    def add_comment(self, post_id, comment):
+        return self.collection.update_one({'_id': ObjectId(post_id)}, {'$push': {'comments': comment}})

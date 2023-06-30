@@ -17,12 +17,14 @@ def get_post_by_id(id):
     description = post['description']
     likes = post['post_data']['likes']
     unlikes = post['post_data']['unlikes']
+    comments = post['comments']
     result = {
         'id': id,
         'title': title,
         'image': image,
         'description': description,
         'likes': likes,
+        'comments': comments,
     }
     return jsonify(result), 200
 
@@ -152,3 +154,12 @@ def add_unlike_in_post(id):
     post_repo_transaction.delete_like(user_id, post_id)
     create_like = post_repo.update_unlikes(id)
     return jsonify({'message': 'Unlike created successfully'}), 201
+
+@jwt_required()
+def add_comment(id):
+    post_id = id
+    comment = request.json['comment']
+    post_repo = PostRepository()
+    post_repo.add_comment(post_id, comment)
+    return jsonify({'message': 'Comment created successfully'}), 201
+
