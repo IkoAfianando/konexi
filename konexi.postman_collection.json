@@ -21,11 +21,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/register",
+					"raw": "{{url}}/register",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"register"
 					]
@@ -48,11 +47,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/login",
+					"raw": "{{url}}/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"login"
 					]
@@ -85,11 +83,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/user",
+					"raw": "{{url}}/user",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"user"
 					]
@@ -113,11 +110,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:5000/user",
+					"raw": "{{url}}/user",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"user"
 					]
@@ -145,34 +141,144 @@
 					"formdata": [
 						{
 							"key": "image",
-							"value": "12",
-							"type": "text"
+							"type": "file",
+							"src": "/home/iko/Pictures/Screenshots/Screenshot from 2023-06-24 11-23-44.png"
 						},
 						{
 							"key": "title",
-							"value": "ikoafian",
+							"value": "afian11",
 							"type": "text"
 						},
 						{
 							"key": "description",
 							"value": "12",
 							"type": "text"
-						},
-						{
-							"key": "image_file",
-							"type": "file",
-							"src": "/home/iko/Downloads/APPS/LibreOffice_7.4.3_Linux_x86-64_deb.tar.gz"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/post",
+					"raw": "{{url}}/post",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET POST by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/post/649da1851b95f0995c9c656c",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"post",
+						"649da1851b95f0995c9c656c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET POSTS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/posts?title=iko",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "iko"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE POST",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"value": "123",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "title",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "image_file",
+							"type": "file",
+							"src": "/home/iko/Downloads/APPS/LibreOffice_7.4.3_Linux_x86-64_deb.tar.gz",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/post/649e4b48c4e2cc970a86a087",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"post",
+						"649e4b48c4e2cc970a86a087"
 					]
 				}
 			},
@@ -219,11 +325,10 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/post/649d9dcfa37853f60d421807",
+					"raw": "{{url}}/post/649d9dcfa37853f60d421807",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"post",
 						"649d9dcfa37853f60d421807"
@@ -233,7 +338,7 @@
 			"response": []
 		},
 		{
-			"name": "UPDATE POST",
+			"name": "ADD LIKE POST",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -245,24 +350,53 @@
 						}
 					]
 				},
-				"method": "PUT",
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/post/649da1851b95f0995c9c656c/like",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"post",
+						"649da1851b95f0995c9c656c",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD UNLIKE POST",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "image",
-							"value": "123",
+							"value": "12",
 							"type": "text"
 						},
 						{
 							"key": "title",
-							"value": "123",
+							"value": "ikoafian",
 							"type": "text"
 						},
 						{
 							"key": "description",
-							"value": "123",
+							"value": "12",
 							"type": "text"
 						},
 						{
@@ -273,21 +407,134 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/post/649d9817c47d5221dae7ade3",
+					"raw": "{{url}}/post/649da1851b95f0995c9c656c/unlike",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
 						"post",
-						"649d9817c47d5221dae7ade3"
+						"649da1851b95f0995c9c656c",
+						"unlike"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET POST by ID",
+			"name": "ADD COMMENT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"comment\": \"ini comment\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/post/649da1851b95f0995c9c656c/comment",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"post",
+						"649da1851b95f0995c9c656c",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD FOLLOW",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": \"649d9cc9cbb3b708b6ca07d6\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/follow",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"follow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD UNFOLLOW",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": \"649d9cc9cbb3b708b6ca07d6\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/unfollow",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"unfollow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET USER FOLLOWER/FOLLOWING",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -301,49 +548,24 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "localhost:5000/post/649d9817c47d5221dae7ade3",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"post",
-						"649d9817c47d5221dae7ade3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET POSTS",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{access_token}}",
-							"type": "string"
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "localhost:5000/posts?title=iko",
+					"raw": "{{url}}/user/social/649d9cc9cbb3b708b6ca07d6",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "5000",
 					"path": [
-						"posts"
-					],
-					"query": [
-						{
-							"key": "title",
-							"value": "iko"
-						}
+						"user",
+						"social",
+						"649d9cc9cbb3b708b6ca07d6"
 					]
 				}
 			},

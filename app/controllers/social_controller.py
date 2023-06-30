@@ -45,4 +45,21 @@ def add_unfollow():
     social_repository.delete(user_id, user_target_id)
     return jsonify({'message': 'success'}), 200
 
+@jwt_required()
+def get_social(id):
+    user_id = get_jwt_identity()
+    user_repository = UserRepository()
+
+    data = user_repository.get_by_id(id)
+    if not data:
+        return jsonify({'message': 'User not found'}), 404
+
+
+    result = {
+        'username': data['username'],
+        'following': data['social']['following'],
+        'follower': data['social']['follower'],
+    }
+    return jsonify(result), 200
+
 

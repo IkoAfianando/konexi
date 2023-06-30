@@ -2,6 +2,7 @@ from flask import jsonify, request
 from app.repositories.post_repository import PostRepository
 from app.repositories.post_transaction_repository import PostTransactionRepository
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.service import upload_file
 
 @jwt_required()
 def get_post_by_id(id):
@@ -54,13 +55,12 @@ def get_posts():
 @jwt_required()
 def add_post():
     user_id = get_jwt_identity()
-    image_file = request.files['image_file'] if 'image_file' in request.files else None
+    image = request.files['image'] if 'image' in request.files else None
 
-    image = request.form.get('image')
     title = request.form.get('title')
     description = request.form.get('description')
 
-    if title is None or title == '' or description is None or description == '' or image is None or image == '':
+    if title is None or title == '' or description is None or description == '':
         return jsonify({'message': 'Title and description are required'}), 400
 
     post_repo = PostRepository()
@@ -69,7 +69,13 @@ def add_post():
     if existing_post:
         return jsonify({'message': 'Title already exists'}), 400
 
-    new_post = post_repo.create(image, title, description, user_id)
+    if image is not None:
+        destination = image.filename if image else None
+        url = upload_file(image, destination, 'belajar-upload')
+    else:
+        url = None
+
+    new_post = post_repo.create(url, title, description, user_id)
     return jsonify({'message': 'Post created successfully'}), 201
 
 
@@ -77,9 +83,8 @@ def add_post():
 def update_post(id):
     user_id = get_jwt_identity()
 
-    image_file = request.files['image_file'] if 'image_file' in request.files else None
+    image = request.files['image'] if 'image' in request.files else None
 
-    image = request.form.get('image')
     title = request.form.get('title')
     description = request.form.get('description')
 
@@ -89,7 +94,13 @@ def update_post(id):
     if user_id != get_by_id['user_id']:
         return jsonify({'message': 'You are not authorized to update this post'}), 401
 
-    update_repo = update_repo.update_post(id, image, title, description)
+    if image is not None:
+        destination = image.filename if image else None
+        url = upload_file(image, destination, 'belajar-upload')
+    else:
+        url = get_by_id['image']
+
+    update_repo = update_repo.update_post(id, url, title, description)
 
     return jsonify({'message': 'Post updated successfully'}), 200
 
