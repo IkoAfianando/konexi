@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from app.repositories.post_repository import PostRepository
+from app.repositories.post_transaction_repository import PostTransactionRepository
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
 
 @jwt_required()
 def get_post_by_id(id):
@@ -23,7 +23,6 @@ def get_post_by_id(id):
         'image': image,
         'description': description,
         'likes': likes,
-        'unlikes': unlikes
     }
     return jsonify(result), 200
 
@@ -38,7 +37,6 @@ def get_posts():
     else:
         data = post_repo.get_posts()
 
-
     result = []
     for post in data:
         result.append({
@@ -47,9 +45,9 @@ def get_posts():
             'image': post['image'],
             'description': post['description'],
             'likes': post['post_data']['likes'],
-            'unlikes': post['post_data']['unlikes']
         })
     return jsonify(result), 200
+
 
 @jwt_required()
 def add_post():
@@ -107,3 +105,50 @@ def delete_post(id):
     delete_repo.delete(id)
 
     return jsonify({'message': 'Post deleted successfully'}), 200
+
+
+@jwt_required()
+def add_like_in_post(id):
+    user_id = get_jwt_identity()
+    post_id = id
+
+    post_repo = PostRepository()
+    post_repo_transaction = PostTransactionRepository()
+
+    post = post_repo.get_by_id(id)
+
+    if post is None:
+        return jsonify({'message': 'Post not found'}), 404
+
+    exist_like = post_repo_transaction.get_by_user_and_post_id_like(user_id, post_id)
+
+    if exist_like:
+        return jsonify({'message': 'You already liked this post'}), 400
+
+    post_repo_transaction.create(user_id, post_id, 'like')
+    post_repo_transaction.delete_unlike(user_id, post_id)
+    create_like = post_repo.update_likes(id)
+    return jsonify({'message': 'Like created successfully'}), 201
+
+
+@jwt_required()
+def add_unlike_in_post(id):
+    user_id = get_jwt_identity()
+    post_id = id
+
+    post_repo = PostRepository()
+    post_repo_transaction = PostTransactionRepository()
+
+    post = post_repo.get_by_id(id)
+
+    if post is None:
+        return jsonify({'message': 'Post not found'}), 404
+
+    exist_unlike = post_repo_transaction.get_by_user_and_post_id_unlike(user_id, post_id)
+    if exist_unlike:
+        return jsonify({'message': 'You already unliked this post'}), 400
+
+    post_repo_transaction.create(user_id, post_id, 'unlike')
+    post_repo_transaction.delete_like(user_id, post_id)
+    create_like = post_repo.update_unlikes(id)
+    return jsonify({'message': 'Unlike created successfully'}), 201
