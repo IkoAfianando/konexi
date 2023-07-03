@@ -17,7 +17,6 @@ def get_post_by_id(id):
     image = post['image']
     description = post['description']
     likes = post['post_data']['likes']
-    unlikes = post['post_data']['unlikes']
     comments = post['comments']
     result = {
         'id': id,
@@ -168,6 +167,7 @@ def add_unlike_in_post(id):
 
 @jwt_required()
 def add_comment(id):
+    print(request)
     post_id = id
     comment = request.json['comment']
     post_repo = PostRepository()
